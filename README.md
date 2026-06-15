@@ -85,11 +85,11 @@ You can use the built-in interactive helper script `label_images.py` to label yo
 3. **Use the Interactive Interface:**
    - **Click and Drag:** Draw a bounding box around the dart.
    - **Double Click:** Place a default $30 \times 30$ box centered at the cursor (useful for quick labeling of target dots).
-   - **Press ENTER / SPACE:** Save the image to `dataset/images/train/` and create the matching YOLO `.txt` label file in `dataset/labels/train/` automatically.
-   - **Press S / ESC:** Skip/ignore this image (useful for filtering out images without a dart/dot to keep the dataset clean and homogeneous).
-   - **Press Q:** Quit the labeler.
+   - **Press ENTER / SPACE:** Save the label and **move** the image. The script automatically and deterministically assigns each image to either the **training set (80%)** or the **validation set (20%)** based on its filename hash, moving the image to `dataset/images/[train|val]/` and creating the YOLO `.txt` label in `dataset/labels/[train|val]/`.
+   - **Press S / ESC:** Skip/ignore this image (moves it to `dataset/raw_images/ignored/` to keep your active queue clean and homogeneous).
+   - **Press Q:** Quit the labeler (remaining unlabeled images stay in the `dataset/raw_images/` queue for next time).
 
-*(Note: If you need custom validation sets, you can manually move a small subset of the labeled files from `dataset/images/train/` and `dataset/labels/train/` to `dataset/images/val/` and `dataset/labels/val/` respectively.)*
+*(Since the script automatically distributes and moves your files, the dataset is instantly structured and ready for training once you finish labeling!)*
 
 ### Step B: Start the Training
 Run the training script:
