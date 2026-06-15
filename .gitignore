@@ -10,10 +10,12 @@ ENV/
 
 # YOLO pre-trained weight downloads
 *.pt
-!models/best.pt  # Force git to track your pre-trained model weights
+# Force git to track your pre-trained model weights
+!models/pretrained/best.pt
 
 # Output folders for training runs
-trained_models/
+trained_models/*
+!trained_models/.gitkeep
 runs/
 
 # IDE settings

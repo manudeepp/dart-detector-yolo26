@@ -6,12 +6,13 @@ from ultralytics import YOLO
 def run_live_detection():
     # Set the model path relative to the script location (so it runs correctly from anywhere)
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    MODEL_PATH = os.path.join(script_dir, "models", "best.pt")
+    MODEL_PATH = os.path.join(script_dir, "models", "pretrained", "best.pt")
     
     # Check if model exists
     if not os.path.exists(MODEL_PATH):
         print(f"ERROR: YOLO model not found at {MODEL_PATH}")
-        print("Please train a model first or ensure your model is saved in the 'models/' folder.")
+        print("Please ensure the default model is at 'models/pretrained/best.pt',")
+        print("or copy your custom trained model there.")
         return
 
     # Initialize webcam

@@ -9,7 +9,10 @@ This is a self-contained, portable, and easy-to-use repository for real-time dar
 ```text
 dart-detector-package/
 ├── models/
-│   └── best.pt               # Pre-trained YOLO26s model weights
+│   └── pretrained/
+│       └── best.pt           # Pre-trained YOLO26s model weights (default)
+├── trained_models/
+│   └── .gitkeep              # Placeholder folder for your custom trained models
 ├── dataset/
 │   ├── images/
 │   │   ├── train/            # Put your custom training images here
@@ -53,7 +56,7 @@ pip install -r requirements.txt
 
 ## 🎯 1. How to Test the Existing Model (Live Webcam)
 
-To run the live detection script using the pre-trained model in `models/best.pt`, execute:
+To run the live detection script using the pre-trained model in `models/pretrained/best.pt`, execute:
 ```cmd
 python detect_live.py
 ```
@@ -98,7 +101,7 @@ When you train a new model:
    trained_models/dart_yolo26s_YYYYMMDD_HHMMSS/weights/best.pt
    ```
 3. **To update the live detection script with your new model, either:**
-   * **Option A:** Copy your new `best.pt` file from `trained_models/dart_yolo26s_YYYYMMDD_HHMMSS/weights/` and overwrite the file in `models/best.pt`. (Recommended)
+   * **Option A:** Copy your new `best.pt` file from `trained_models/dart_yolo26s_YYYYMMDD_HHMMSS/weights/` and overwrite the file in `models/pretrained/best.pt`. (Recommended)
    * **Option B:** Open `detect_live.py` and modify the `MODEL_PATH` variable to point to your new run folder path:
      ```python
      MODEL_PATH = os.path.join(script_dir, "trained_models", "dart_yolo26s_YYYYMMDD_HHMMSS", "weights", "best.pt")
