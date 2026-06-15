@@ -1,0 +1,6 @@
+path: ./dataset  # Path to dataset root (relative to the directory where train.py is executed)
+train: images/train  # Relative path to training images
+val: images/val  # Relative path to validation images
+
+nc: 1  # Number of classes
+names: ["dart"]  # Class names

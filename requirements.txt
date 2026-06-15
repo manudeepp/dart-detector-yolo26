@@ -1,0 +1,3 @@
+# Core dependencies for YOLO detection and webcam loop
+ultralytics
+opencv-python

@@ -1,0 +1,30 @@
+# Python bytecode cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments (local setup)
+env/
+venv/
+ENV/
+
+# YOLO pre-trained weight downloads
+*.pt
+!models/best.pt  # Force git to track your pre-trained model weights
+
+# Output folders for training runs
+trained_models/
+runs/
+
+# IDE settings
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS metadata
+.DS_Store
+Thumbs.db
