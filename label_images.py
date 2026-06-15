@@ -103,8 +103,9 @@ def label_single_image(image_path, idx, total):
     print(f"\n[{idx}/{total}] Labeling: {filename} -> Target Split: {split.upper()}")
     print("  -> Drag Mouse: draw bounding box around dart")
     print("  -> Double Click: place a default 30x30 bounding box at cursor")
-    print("  -> Enter or Space: Save label & move image to dataset")
-    print("  -> S or Esc: Skip/ignore this image (Move to raw_images/ignored/)")
+    print("  -> Enter or Space (with box drawn): Save labeled image to dataset")
+    print("  -> Enter or Space (no box drawn):   Save as background image (no dart) to dataset")
+    print("  -> Esc or I: Ignore/discard this image (Move to raw_images/ignored/)")
     print("  -> Q: Quit labeling application")
 
     while True:
@@ -129,19 +130,20 @@ def label_single_image(image_path, idx, total):
         
         # Display instructions with split details
         text1 = f"[{idx}/{total}] {filename} ({w_orig}x{h_orig}) -> [{split.upper()}]"
-        text2 = "Drag: Draw | DblClick: Quick Box | Enter: Save | S/Esc: Ignore | Q: Quit"
+        text2 = "Drag: Draw | Enter: Save Labeled/Background | Esc/I: Ignore | Q: Quit"
         cv2.putText(img_disp, text1, (10, 18), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (100, 255, 100) if split == 'train' else (255, 200, 100), 1, cv2.LINE_AA)
         cv2.putText(img_disp, text2, (10, 35), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
         
         cv2.imshow(window_name, img_disp)
         key = cv2.waitKey(30) & 0xFF
         
-        # ESC or 's'/'S' -> Skip image
-        if key == 27 or key == ord('s') or key == ord('S'):
+        # ESC or 'i'/'I' -> Ignore/Skip image
+        if key == 27 or key == ord('i') or key == ord('I'):
             cv2.destroyWindow(window_name)
-            # Move skipped image to ignored folder
+            # Move ignored image to ignored folder
             dest_ignored_path = os.path.join(IGNORED_DIR, filename)
             shutil.move(image_path, dest_ignored_path)
+            print(f"  -> IGNORED: {filename} (Moved to raw_images/ignored/)")
             return 'skip'
             
         # 'q'/'Q' -> Quit program
@@ -149,9 +151,22 @@ def label_single_image(image_path, idx, total):
             cv2.destroyWindow(window_name)
             return 'quit'
             
-        # Enter (13) or Space (32) -> Save box
+        # Enter (13) or Space (32) -> Save
         elif key == 13 or key == 32:
+            # Determine directory destinations based on train/val split
+            if split == 'train':
+                dest_img_dir = IMG_TRAIN_DIR
+                dest_lbl_dir = LBL_TRAIN_DIR
+            else:
+                dest_img_dir = IMG_VAL_DIR
+                dest_lbl_dir = LBL_VAL_DIR
+            
+            filename_no_ext, _ = os.path.splitext(filename)
+            label_filename = f"{filename_no_ext}.txt"
+            label_path = os.path.join(dest_lbl_dir, label_filename)
+            
             if selected_box:
+                # 1. SAVE AS LABELED IMAGE
                 x1, y1, x2, y2 = selected_box
                 # Clamp coordinates to display boundaries
                 x1 = max(0, min(x1, w_disp))
@@ -173,31 +188,28 @@ def label_single_image(image_path, idx, total):
                 yolo_w = w_orig_box / w_orig
                 yolo_h = h_orig_box / h_orig
                 
-                # Determine directory destinations based on train/val split
-                if split == 'train':
-                    dest_img_dir = IMG_TRAIN_DIR
-                    dest_lbl_dir = LBL_TRAIN_DIR
-                else:
-                    dest_img_dir = IMG_VAL_DIR
-                    dest_lbl_dir = LBL_VAL_DIR
-                
-                # Save label text file
-                filename_no_ext, _ = os.path.splitext(filename)
-                label_filename = f"{filename_no_ext}.txt"
-                label_path = os.path.join(dest_lbl_dir, label_filename)
-                
+                # Save coordinates
                 with open(label_path, "w") as f:
                     f.write(f"0 {x_center:.6f} {y_center:.6f} {yolo_w:.6f} {yolo_h:.6f}\n")
                 
-                # Move image file from queue to target split folder
+                # Move image file
                 dest_image_path = os.path.join(dest_img_dir, filename)
                 shutil.move(image_path, dest_image_path)
                 
-                print(f"  -> SAVED to [{split.upper()}]: {filename} and label.")
-                cv2.destroyWindow(window_name)
-                return 'next'
+                print(f"  -> SAVED LABELED to [{split.upper()}]: {filename} with box coordinates.")
             else:
-                print("  -> Please draw a box first, or press 'S' to skip.")
+                # 2. SAVE AS BACKGROUND IMAGE (Empty label file)
+                with open(label_path, "w") as f:
+                    pass  # Create empty file
+                
+                # Move image file
+                dest_image_path = os.path.join(dest_img_dir, filename)
+                shutil.move(image_path, dest_image_path)
+                
+                print(f"  -> SAVED BACKGROUND to [{split.upper()}]: {filename} (no darts, empty label).")
+            
+            cv2.destroyWindow(window_name)
+            return 'next'
 
 def main():
     print("=" * 60)
@@ -238,10 +250,10 @@ def main():
     print("\n" + "=" * 60)
     print("LABELING SESSION SUMMARY")
     print("=" * 60)
-    print(f"  - Images successfully labeled: {labeled_count}")
-    print(f"  - Images skipped/ignored:     {skipped_count}")
-    print(f"  - Train Set Output:            {IMG_TRAIN_DIR}")
-    print(f"  - Val Set Output:              {IMG_VAL_DIR}")
+    print(f"  - Images successfully added to dataset: {labeled_count}")
+    print(f"  - Images ignored/skipped:              {skipped_count}")
+    print(f"  - Train Set Output:                    {IMG_TRAIN_DIR}")
+    print(f"  - Val Set Output:                      {IMG_VAL_DIR}")
     print("=" * 60)
 
 if __name__ == "__main__":
