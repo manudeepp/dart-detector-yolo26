@@ -14,14 +14,17 @@ dart-detector-package/
 ├── trained_models/
 │   └── .gitkeep              # Placeholder folder for your custom trained models
 ├── dataset/
+│   ├── raw_images/           # Put your raw unlabeled training images here
+│   │   └── README.txt        # Guidance text file
 │   ├── images/
-│   │   ├── train/            # Put your custom training images here
+│   │   ├── train/            # Target folder for labeled training images
 │   │   └── val/              # Put your custom validation images here
 │   ├── labels/
-│   │   ├── train/            # Put your custom training YOLO label text files here
+│   │   ├── train/            # Target folder for training YOLO label text files
 │   │   └── val/              # Put your custom validation YOLO label text files here
 │   └── dataset.yaml          # Dataset path configuration file
 ├── requirements.txt          # Python dependencies
+├── label_images.py           # Interactive GUI script to create labels
 ├── train.py                  # Script to train a new YOLO26 model
 ├── detect_live.py            # Script for live real-time webcam detection
 └── README.md                 # This instruction guide
