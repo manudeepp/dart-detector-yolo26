@@ -31,22 +31,15 @@ dart-detector-package/
 
 ## ⚙️ Installation & Setup
 
-Ensure you have **Python 3.9 - 3.12** installed on your system.
+Ensure you have **Python** installed on your system.
 
-### 1. Create a Virtual Environment (Recommended)
-Open your terminal inside this folder and run:
-```cmd
-python -m venv env
-env\Scripts\activate
-```
-
-### 2. Install PyTorch with GPU Support (CUDA)
+### 1. Install PyTorch with GPU Support (CUDA)
 To speed up training and inference using your NVIDIA GPU (e.g., RTX 3060/4060), install the CUDA-enabled version of PyTorch:
 ```cmd
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
 ```
 
-### 3. Install Package Dependencies
+### 2. Install Package Dependencies
 Install the remaining packages (`ultralytics` and `opencv-python`):
 ```cmd
 pip install -r requirements.txt
@@ -77,10 +70,23 @@ python detect_live.py
 
 If you want to train a custom model to detect darts (or other items) in your specific environment:
 
-### Step A: Prepare Your Dataset
-1. Place your training images in `dataset/images/train/` and validation images in `dataset/images/val/`.
-2. Convert your bounding box annotations to **YOLO format** (normalized coordinates `class_id x_center y_center width height`).
-3. Place matching `.txt` annotation files in `dataset/labels/train/` and `dataset/labels/val/` respectively (e.g., `image_01.jpg` must match `image_01.txt`).
+### Step A: Prepare Your Dataset & Create Labels
+
+You can use the built-in interactive helper script `label_images.py` to label your images easily:
+
+1. **Add Raw Images:** Put your raw, unlabeled images in `dataset/raw_images/`.
+2. **Run the Labeler:**
+   ```cmd
+   python label_images.py
+   ```
+3. **Use the Interactive Interface:**
+   - **Click and Drag:** Draw a bounding box around the dart.
+   - **Double Click:** Place a default $30 \times 30$ box centered at the cursor (useful for quick labeling of target dots).
+   - **Press ENTER / SPACE:** Save the image to `dataset/images/train/` and create the matching YOLO `.txt` label file in `dataset/labels/train/` automatically.
+   - **Press S / ESC:** Skip/ignore this image (useful for filtering out images without a dart/dot to keep the dataset clean and homogeneous).
+   - **Press Q:** Quit the labeler.
+
+*(Note: If you need custom validation sets, you can manually move a small subset of the labeled files from `dataset/images/train/` and `dataset/labels/train/` to `dataset/images/val/` and `dataset/labels/val/` respectively.)*
 
 ### Step B: Start the Training
 Run the training script:
