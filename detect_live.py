@@ -46,9 +46,11 @@ def run_live_detection():
     # FPS variables
     prev_frame_time = 0
     
-    # Create window and set it to be resizable
+    # Create window, set it to be resizable, and force it to keep the 1:1 aspect ratio
     window_name = 'Dart Detector (YOLO26s) - Symmetrical Square FOV'
     cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
+    cv2.setWindowProperty(window_name, cv2.WND_PROP_ASPECT_RATIO, cv2.WINDOW_KEEPRATIO)
+    cv2.resizeWindow(window_name, square_size, square_size)
 
     while True:
         success, img = cap.read()

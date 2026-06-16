@@ -48,8 +48,17 @@ def check_device_and_train():
     
     print(f"Training outputs will be saved to: {os.path.join(project_dir, run_name)}")
 
-    # Load the latest YOLO26 Small model
-    model = YOLO("yolo26s.pt")
+    # Load the YOLO model
+    # By default, we load the existing pre-trained model ('models/pretrained/best.pt') for fine-tuning.
+    # If you want to start training fresh, you can simply load YOLO("yolo26s.pt") instead.
+    model_path = os.path.join(script_dir, "models", "pretrained", "best.pt")
+    
+    if os.path.exists(model_path):
+        print(f"Loading existing model for fine-tuning: {model_path}")
+        model = YOLO(model_path)
+    else:
+        print("Existing pre-trained model not found. Starting training with standard 'yolo26s.pt'...")
+        model = YOLO("yolo26s.pt")
     
     # Start the training process
     model.train(
