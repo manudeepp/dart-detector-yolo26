@@ -78,7 +78,7 @@ If you want to train a custom model to detect darts (or other items) in your spe
 
 To train a robust model, your dataset should contain a healthy mix of:
 1. **Labeled Images:** Images where darts are present, marked with bounding boxes.
-2. **Background Images (Negative Samples):** Images of your dartboard setup without any darts. These teach the model to avoid false positives.
+2. **Background Images (Negative Samples):** Images of your setup without any darts. These teach the model to avoid false positives.
 
 | Background Image (No Dart) | Labeled Image (With Dart) |
 | :---: | :---: |
