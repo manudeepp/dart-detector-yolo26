@@ -44,7 +44,7 @@ pip install torch torchvision torchaudio --index-url https://download.pytorch.or
 ```
 
 ### 2. Install Package Dependencies
-Install the remaining packages (`ultralytics` and `opencv-python`):
+Install the remaining packages (`ultralytics`, `opencv-python`, and `numpy`):
 ```cmd
 pip install -r requirements.txt
 ```

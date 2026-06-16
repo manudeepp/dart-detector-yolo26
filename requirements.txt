@@ -1,3 +1,4 @@
-# Core dependencies for YOLO detection and webcam loop
+# Core dependencies for YOLO detection, webcam feed, labeling, and data augmentation
 ultralytics
 opencv-python
+numpy
