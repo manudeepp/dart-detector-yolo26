@@ -4,7 +4,7 @@ This is a self-contained, portable, and easy-to-use repository for real-time dar
 
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```text
 dart-detector-package/
@@ -33,7 +33,7 @@ dart-detector-package/
 
 ---
 
-## ⚙️ Installation & Setup
+## Installation & Setup
 
 Ensure you have **Python** installed on your system.
 
@@ -51,26 +51,26 @@ pip install -r requirements.txt
 
 ---
 
-## 🎯 1. How to Test the Existing Model (Live Webcam)
+## 1. How to Test the Existing Model (Live Webcam)
 
 To run the live detection script using the pre-trained model in `models/pretrained/best.pt`, execute:
 ```cmd
 python detect_live.py
 ```
 
-### 🎮 Live Feed Controls:
+### Live Feed Controls:
 * **`q`** or **`Q`** or **`ESC`**: Gracefully close the window and exit the application.
 * **`w`** or **`+`**: **Increase** the confidence threshold by 5% (makes it stricter, reducing false positives).
 * **`s`** or **`-`**: **Decrease** the confidence threshold by 5% (makes it more sensitive).
 
-### 🖥️ Interactive HUD Display:
+### Interactive HUD Display:
 * **Red Target Dot:** The exact center coordinate `(X, Y)` of the dart, printed next to the dot.
 * **Relative Coordinate `[rel_X, rel_Y]`:** Symmetrical normalized values from `0.00` to `1.00`. If you know the physical dimensions of the frame (e.g., 0.5m x 0.5m), multiply these values to get the exact physical coordinates (e.g., `0.5 * 0.5m = 0.25m`).
 * **Centered 1:1 Square Crop:** The script dynamically center-crops the feed into a square shape, maximizing your hardware field of view (FOV) while keeping spatial scaling equal on both axes.
 
 ---
 
-## 🏋️ 2. How to Train a New Model on Your Data
+## 2. How to Train a New Model on Your Data
 
 If you want to train a custom model to detect darts (or other items) in your specific environment:
 
@@ -122,7 +122,7 @@ python train.py
 
 ---
 
-## 🔄 3. Where are New Models Saved & How to Update Detection
+## 3. Where are New Models Saved & How to Update Detection
 
 When you train a new model:
 1. The training run outputs will be saved inside the **`trained_models/`** directory in a dedicated folder timestamped with the run start time (e.g., `trained_models/dart_yolo26s_20260615_191500/`).
@@ -139,7 +139,7 @@ When you train a new model:
 
 ---
 
-## 🛠️ Troubleshooting
+## Troubleshooting
 
 ### Multiple Webcams / Wrong Camera Active
 If the script opens the wrong camera (e.g., your laptop's built-in webcam instead of your external USB camera), you can change the camera source index:
